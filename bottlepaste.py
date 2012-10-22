@@ -8,7 +8,7 @@ def hash(str_):
 
 @route('/')
 def index():
-    return '<b>Hello World</b>!'
+    return "</br>".join(storage.keys())
 
 
 @route('/', method='POST')

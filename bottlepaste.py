@@ -4,13 +4,9 @@ from bottle import route, run, request, response
 storage = {}
 BASE_URL = 'http://localhost:8080/'
 
-DESCRIPTION = """
-NAME
-    bottlepaste: command line pastebin based on bottle.py
-
-SYNOPSIS
-    <command> | curl -F 'bp=<-' %s
-""" % BASE_URL
+with open('README.rst') as readme:
+    DESCRIPTION = readme.read()
+DESCRIPTION = DESCRIPTION.replace("$DEPLOYMENT_URL", BASE_URL)
 
 
 def hash(str_):

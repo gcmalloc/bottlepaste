@@ -214,4 +214,5 @@ def upload():
 
 if __name__ == '__main__':
     DESCRIPTIONS, STORAGE = {}, create_db(get_creds())
-    run(host='localhost', port=8080)
+    port = int(os.environ.get('PORT', 5000))
+    run(host='0.0.0.0', port=port)

@@ -32,6 +32,6 @@ def upload():
     code = request.forms.get("bp")
     digest = hash(code)[:7]
     storage[digest] = code
-    return "http://localhost:8080/%s\n" % digest
+    return "%s/%s\n" % (BASE_URL, digest)
 
 run(host='localhost', port=8080)

@@ -10,6 +10,9 @@ def hash(str_):
 def index():
     return "</br>".join(storage.keys())
 
+@route('/<uid>')
+def show(uid):
+    return storage[uid]
 
 @route('/', method='POST')
 def upload():

@@ -1,5 +1,5 @@
 import hashlib
-from bottle import route, run, request
+from bottle import route, run, request, response
 
 storage = {}
 BASE_URL = 'http://localhost:8080/'
@@ -19,11 +19,13 @@ def hash(str_):
 
 @route('/')
 def index():
+    response.content_type = 'text/plain; charset=utf-8'
     return DESCRIPTION
 
 
 @route('/<uid>')
 def show(uid):
+    response.content_type = 'text/plain; charset=utf-8'
     return storage[uid]
 
 

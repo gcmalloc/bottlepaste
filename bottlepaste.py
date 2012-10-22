@@ -9,7 +9,7 @@ NAME
     sprunge: command line pastebin.
 
 SYNOPSIS
-    <command> | curl -F 'sprunge=<-' %s
+    <command> | curl -F 'bp=<-' %s
 """ % BASE_URL
 
 

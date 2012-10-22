@@ -2,7 +2,7 @@ import hashlib
 from bottle import route, run, request, response
 
 storage = {}
-BASE_URL = 'http://localhost:8080/'
+BASE_URL = 'http://localhost:8080'
 
 with open('README.rst') as readme:
     DESCRIPTION = readme.read()

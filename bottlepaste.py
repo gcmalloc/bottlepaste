@@ -6,7 +6,7 @@ BASE_URL = 'http://localhost:8080/'
 
 DESCRIPTION = """
 NAME
-    sprunge: command line pastebin.
+    bottlepaste: command line pastebin based on bottle.py
 
 SYNOPSIS
     <command> | curl -F 'bp=<-' %s

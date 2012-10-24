@@ -1,7 +1,6 @@
 import hashlib
 from bottle import route, run, request, response, abort
 
-storage = {}
 BASE_URL = 'http://localhost:8080'
 
 
@@ -10,6 +9,23 @@ def description(filename='INDEX.rst'):
         return readme.read().replace("$DEPLOYMENT_URL", BASE_URL)
 
 DESCRIPTION = description()
+
+
+class Database(object):
+
+    def __init__(self):
+        self._dict = {}
+        self.get = self._get_dict
+        self.put = self._put_dict
+
+    def _get_dict(self, uid):
+        return self._dict[uid]
+
+    def _put_dict(self, uid, code):
+        self._dict[uid] = code
+        return True
+
+storage = Database()
 
 
 def hash(str_):
@@ -26,7 +42,7 @@ def index():
 def show(uid):
     response.content_type = 'text/plain; charset=utf-8'
     try:
-        return storage[uid]
+        return storage.get(uid)
     except KeyError:
         abort(404, "Sorry, paste: '%s' Not found." % uid)
 
@@ -34,8 +50,8 @@ def show(uid):
 @route('/', method='POST')
 def upload():
     code = request.forms.get("bp")
-    digest = hash(code)[:7]
-    storage[digest] = code
-    return "%s/%s\n" % (BASE_URL, digest)
+    uid = hash(code)[:7]
+    storage.put(uid, code)
+    return "%s/%s\n" % (BASE_URL, uid)
 
 run(host='localhost', port=8080)

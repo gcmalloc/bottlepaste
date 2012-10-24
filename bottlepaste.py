@@ -6,7 +6,7 @@ BASE_URL = 'http://localhost:8080'
 
 
 def description(filename='INDEX.rst'):
-    with open('INDEX.rst') as readme:
+    with open(filename) as readme:
         return readme.read().replace("$DEPLOYMENT_URL", BASE_URL)
 
 DESCRIPTION = description()

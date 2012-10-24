@@ -30,6 +30,7 @@ def show(uid):
     except KeyError:
         abort(404, "Sorry, paste: '%s' Not found." % uid)
 
+
 @route('/', method='POST')
 def upload():
     code = request.forms.get("bp")

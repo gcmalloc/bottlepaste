@@ -4,15 +4,8 @@ bottlepaste
 A command line pastebin akin to `sprunge.us <http://sprunge.us/>`_ but using
 `bottle.py <http://bottlepy.org/docs/dev/bottle.py>`_.
 
-The author deploys it on `cloudControl https://www.cloudcontrol.com/>`_
-
-Synposis
---------
-
-Use curl to paste::
-
-    $ cat bottlepaste.py | curl -F 'bp=<-'  $DEPLOYMENT_URL
-    $ $DEPLOYMENT_URL/6e5da45
+The author deploys it on `cloudControl https://www.cloudcontrol.com/>`_ as:
+`bottlepaste <http://bottlepaste.cloudcontrolled.com/>`_
 
 Stability
 ---------

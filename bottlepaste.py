@@ -4,7 +4,7 @@ from bottle import route, run, request, response, abort
 storage = {}
 BASE_URL = 'http://localhost:8080'
 
-with open('README.rst') as readme:
+with open('INDEX.rst') as readme:
     DESCRIPTION = readme.read()
 DESCRIPTION = DESCRIPTION.replace("$DEPLOYMENT_URL", BASE_URL)
 

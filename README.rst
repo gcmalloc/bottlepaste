@@ -1,9 +1,10 @@
 bottlepaste
 -----------
 
-A command line pastebin akin to ''http://sprunge.us/'' but using ''bottle.py''.
+A command line pastebin akin to `sprunge.us <http://sprunge.us/>`_ but using
+`bottle.py <http://bottlepy.org/docs/dev/bottle.py>`_.
 
-The author deploys it on ''http://cc.bp.cloudcontrolled.com/''.
+The author deploys it on `cloudControl https://www.cloudcontrol.com/>`_
 
 Synposis
 --------

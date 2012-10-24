@@ -10,4 +10,4 @@ Synposis
 Use curl to paste::
 
     $ cat bottlepaste.py | curl -F 'bp=<-'  $DEPLOYMENT_URL
-    $ $DEPLOYMENT_URL/6e5da45
+    $DEPLOYMENT_URL/6e5da45

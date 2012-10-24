@@ -4,9 +4,12 @@ from bottle import route, run, request, response, abort
 storage = {}
 BASE_URL = 'http://localhost:8080'
 
-with open('INDEX.rst') as readme:
-    DESCRIPTION = readme.read()
-DESCRIPTION = DESCRIPTION.replace("$DEPLOYMENT_URL", BASE_URL)
+
+def description(filename='INDEX.rst'):
+    with open('INDEX.rst') as readme:
+        return readme.read().replace("$DEPLOYMENT_URL", BASE_URL)
+
+DESCRIPTION = description()
 
 
 def hash(str_):

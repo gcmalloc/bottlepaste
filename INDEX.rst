@@ -1,5 +1,5 @@
-bottlepase
-----------
+bottlepaste
+-----------
 
 A command line pastebin akin to `sprunge.us <http://sprunge.us/>`_ but using
 `bottle.py <http://bottlepy.org/docs/dev/bottle.py>`_.

@@ -1,4 +1,7 @@
 #!/bin/sh
+
+set +x
+
 git push github master &&
 git co custom &&
 git rebase master &&

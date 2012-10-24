@@ -12,6 +12,20 @@ Stability
 
 This software is in alpha stage. Don't depend in any way on the links.
 
+Deployment
+----------
+
+The cloudControl specific customizations and files  are stored in the
+``custom`` branch. When deploying, the ``custom`` branch is rebased onto the
+local master, then pushed to ``master`` on the remote side and then deployed as
+the ``default`` deployment::
+
+    git co custom && git rebase master && git push -f && \
+    cctrlapp bottlepaste/default deploy && git co master
+
+Incidentally, since cloudControl uses ``buildpacks`` you *should* be able tp
+deploy this app to heroku too.
+
 Copyright
 ---------
 

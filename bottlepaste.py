@@ -1,5 +1,8 @@
 import hashlib
+import json
+import datetime
 from bottle import route, run, request, response, abort
+from pymongo import Connection
 
 BASE_URL = 'http://localhost:8080'
 
@@ -30,11 +33,41 @@ def creds():
 
 DESCRIPTION = description()
 CREDS = creds()
+COLLECTION = 'paste_collection'
 
 
 class Database(object):
 
     def __init__(self):
+        try:
+            # try to init mongodb connection
+            mongodburi = CREDS['MONGOLAB']['MONGOLAB_URI']
+            self._init_mongo(mongodburi)
+        # fallback to simple storage if not possible
+        except (KeyError):
+            self._init_dict()
+
+    def _init_mongo(self, mongodburi):
+        self.description = 'mongo'
+        db_name = mongodburi[mongodburi.rfind('/') + 1:]
+        self._mongo = Connection(mongodburi)[db_name][COLLECTION]
+        self.get = self._get_mongo
+        self.put = self._put_mongo
+
+    def _get_mongo(self, uid):
+        entry = self._mongo.find_one(uid)
+        if entry is None:
+            raise KeyError()
+        else:
+            return entry['code']
+
+    def _put_mongo(self, code):
+        uid = hash(code)
+        return self._mongo.insert({"_id": uid, "code": code,
+            "date": datetime.datetime.utcnow()})
+
+    def _init_dict(self):
+        self.description = 'dict'
         self._dict = {}
         self.get = self._get_dict
         self.put = self._put_dict
@@ -47,6 +80,8 @@ class Database(object):
         self._dict[uid] = code
         return uid
 
+    def __str__(self):
+        return self.description
 
 storage = Database()
 

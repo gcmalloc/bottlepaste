@@ -22,6 +22,17 @@ the ``default`` deployment. See the ``magic.sh`` script for how it's done.
 Incidentally, since cloudControl uses ``buildpacks`` you *should* be able tp
 deploy this app to heroku too.
 
+TODO
+----
+
+* mongodb
+* gzip compression
+* pygments highlighting
+* cron to clean db
+* info.html to show info and statistics
+* nice frontend
+* pasteform
+
 Copyright
 ---------
 

@@ -8,7 +8,28 @@ def description(filename='INDEX.rst'):
     with open(filename) as readme:
         return readme.read().replace("$DEPLOYMENT_URL", BASE_URL)
 
+
+def creds():
+    """ Try to obatin the credentials dictionary. """
+    try:
+        # get name of file from env
+        cred_file = os.environ.get('CRED_FILE', '')
+        # read file contents
+        with open(cred_file, 'r') as cred_fp:
+            cred_str = cred_fp.read()
+    # in case the file doesn't exist
+    except IOError:
+        return {}
+    try:
+        # try to convert from json to dict
+        return json.loads(cred_str)
+    # in case the file contains nothing or garbage
+    except ValueError:
+        return {}
+
+
 DESCRIPTION = description()
+CREDS = creds()
 
 
 class Database(object):

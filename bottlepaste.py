@@ -64,7 +64,7 @@ class Database(object):
     def _put_mongo(self, code):
         uid = hash(code)
         return self._mongo.insert({"_id": uid, "code": code,
-            "date": datetime.datetime.utcnow()})
+            "date": datetime.datetime.utcnow()}, safe=True)
 
     def _init_dict(self):
         self.description = 'dict'

@@ -42,15 +42,17 @@ class Database(object):
     def _get_dict(self, uid):
         return self._dict[uid]
 
-    def _put_dict(self, uid, code):
+    def _put_dict(self, code):
+        uid = hash(code)
         self._dict[uid] = code
-        return True
+        return uid
+
 
 storage = Database()
 
 
 def hash(str_):
-    return hashlib.sha224(str_).hexdigest()
+    return hashlib.sha224(str_).hexdigest()[:7]
 
 
 @route('/')
@@ -71,8 +73,7 @@ def show(uid):
 @route('/', method='POST')
 def upload():
     code = request.forms.get("bp")
-    uid = hash(code)[:7]
-    storage.put(uid, code)
+    uid = storage.put(code)
     return "%s/%s\n" % (BASE_URL, uid)
 
 run(host='localhost', port=8080)

@@ -6,7 +6,7 @@ A command line pastebin akin to `sprunge.us <http://sprunge.us/>`_ but using
 `MongoDB <http://www.mongodb.org/>`_ via `PyMongo
 <http://api.mongodb.org/python/current/>`_ as storage.
 
-The author deploys it on `cloudControl <https://www.cloudcontrol.com/>`_ and
+The author deploys it on `cloudControl <https://www.cloudcontrol.com/>`_ using
 a MongoDB provided by `mongolab <https://www.mongolab.com/home>`_ as:
 `bottlepaste <http://bottlepaste.cloudcontrolled.com/>`_. Enjoy!
 

@@ -2,10 +2,13 @@ bottlepaste
 -----------
 
 A command line pastebin akin to `sprunge.us <http://sprunge.us/>`_ but using
-`bottle.py <http://bottlepy.org/docs/dev/bottle.py>`_.
+`bottle.py <http://bottlepy.org/docs/dev/bottle.py>`_ as webframework and
+`MongoDB <http://www.mongodb.org/>`_ via `PyMongo
+<http://api.mongodb.org/python/current/>`_ as storage.
 
-The author deploys it on `cloudControl <https://www.cloudcontrol.com/>`_ as:
-`bottlepaste <http://bottlepaste.cloudcontrolled.com/>`_
+The author deploys it on `cloudControl <https://www.cloudcontrol.com/>`_ and
+a MongoDB provided by `mongolab <https://www.mongolab.com/home>`_ as:
+`bottlepaste <http://bottlepaste.cloudcontrolled.com/>`_. Enjoy!
 
 Stability
 ---------

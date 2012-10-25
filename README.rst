@@ -25,7 +25,6 @@ deploy this app to heroku too.
 TODO
 ----
 
-* mongodb
 * gzip compression
 * pygments highlighting
 * cron to clean db

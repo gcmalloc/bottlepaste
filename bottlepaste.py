@@ -5,14 +5,15 @@
 # © 2012 Valentin Haenel
 # bottlepaste is licensed under the terms of the MIT License.
 
-import os
 import hashlib
 import json
+import os
 import time
 import zlib
+
 from bottle import route, run, request, response, abort
-from pymongo import Connection
 from bson.binary import Binary
+from pymongo import Connection
 
 # the base url of the app
 BASE_URL = 'http://localhost:8080'

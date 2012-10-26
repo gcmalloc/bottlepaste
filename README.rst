@@ -29,6 +29,7 @@ TODO
 ----
 
 * pygments highlighting
+* allow for custom ID
 * cron to clean db
 * info.html to show info and statistics
 * nice frontend

@@ -56,16 +56,20 @@ class Database(object):
         self.get = self._get_mongo
         self.put = self._put_mongo
 
+    def _get_mongo_entry(self, uid):
+        return self._mongo.find_one(uid)
+
     def _get_mongo(self, uid):
-        entry = self._mongo.find_one(uid)
+        entry = self._get_mongo_entry(uid)
         return zlib.decompress(entry['code']) if entry is not None else None
 
     def _put_mongo(self, code):
-        ds = Database.make_ds(code)
-        if self._get_mongo(ds['_id']) is not None:
-            return ds['_id']
-        else:
-            return self._mongo.insert(ds, safe=True)
+        digest = Database.hash_(code)
+        if self._get_mongo_entry(digest) is None:
+            self._mongo.insert(Database.make_ds(digest,
+                Binary(zlib.compress(code))),
+                    safe=True)
+        return digest
 
     def _init_dict(self):
         self.description = 'dict'
@@ -80,9 +84,11 @@ class Database(object):
             return None
 
     def _put_dict(self, code):
-        ds = Database.make_ds(code, binary=False)
-        self._dict[ds['_id']] = ds
-        return ds['_id']
+        digest = Database.hash_(code)
+        if digest not in self._dict:
+            ds = Database.make_ds(digest, zlib.compress(code))
+            self._dict[digest] = ds
+        return digest
 
     def __str__(self):
         return self.description
@@ -92,10 +98,9 @@ class Database(object):
         return hashlib.sha224(str_).hexdigest()[:7]
 
     @staticmethod
-    def make_ds(code, binary=True):
-        compressed = zlib.compress(code)
-        return {"_id": Database.hash_(code),
-                "code": Binary(compressed) if binary else compressed,
+    def make_ds(digest, code):
+        return {"_id":  digest,
+                "code": code,
                 "date": time.time()}
 
 storage = Database()

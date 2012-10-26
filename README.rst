@@ -28,7 +28,6 @@ deploy this app to heroku too.
 TODO
 ----
 
-* gzip compression
 * pygments highlighting
 * cron to clean db
 * info.html to show info and statistics

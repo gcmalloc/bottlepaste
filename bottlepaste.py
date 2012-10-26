@@ -5,6 +5,7 @@
 # © 2012 Valentin Haenel
 # bottlepaste is licensed under the terms of the MIT License.
 
+import abc
 import hashlib
 import json
 import os
@@ -65,6 +66,8 @@ def create_db():
 class Database(object):
     """ Database abstract class. """
 
+    __metaclass__ = abc.ABCMeta
+
     def __str__(self):
         return self._description
 
@@ -77,6 +80,14 @@ class Database(object):
         return {"_id":  digest,
                 "code": code,
                 "date": time.time()}
+
+    @abc.abstractmethod
+    def put(self, code):
+        pass
+
+    @abc.abstractmethod
+    def get(self, uid):
+        pass
 
 
 class MongoDB(Database):

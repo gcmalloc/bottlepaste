@@ -61,7 +61,11 @@ class Database(object):
         return zlib.decompress(entry['code']) if entry is not None else None
 
     def _put_mongo(self, code):
-        return self._mongo.insert(Database.make_ds(code), safe=True)
+        ds = Database.make_ds(code)
+        if self._get_mongo(ds['_id']) is not None:
+            return ds['_id']
+        else:
+            return self._mongo.insert(ds, safe=True)
 
     def _init_dict(self):
         self.description = 'dict'

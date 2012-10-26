@@ -1,8 +1,10 @@
 import hashlib
 import json
 import time
+import zlib
 from bottle import route, run, request, response, abort
 from pymongo import Connection
+from bson.binary import Binary
 
 BASE_URL = 'http://localhost:8080'
 
@@ -59,7 +61,7 @@ class Database(object):
         if entry is None:
             raise KeyError()
         else:
-            return entry['code']
+            return zlib.decompress(entry['code'])
 
     def _put_mongo(self, code):
         return self._mongo.insert(Database.make_ds(code), safe=True)
@@ -71,10 +73,10 @@ class Database(object):
         self.put = self._put_dict
 
     def _get_dict(self, uid):
-        return self._dict[uid]['code']
+        return zlib.decompress(self._dict[uid]['code'])
 
     def _put_dict(self, code):
-        ds = Database.make_ds(code)
+        ds = Database.make_ds(code, binary=False)
         self._dict[ds['_id']] = ds
         return ds['_id']
 
@@ -86,9 +88,10 @@ class Database(object):
         return hashlib.sha224(str_).hexdigest()[:7]
 
     @staticmethod
-    def make_ds(code):
+    def make_ds(code, binary=True):
+        compressed = zlib.compress(code)
         return {"_id": Database.hash_(code),
-                "code": code,
+                "code": Binary(compressed) if binary else compressed,
                 "date": time.time()}
 
 storage = Database()

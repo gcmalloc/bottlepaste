@@ -148,7 +148,6 @@ def upload():
     return "%s/%s\n" % (BASE_URL, uid)
 
 if __name__ == '__main__':
-    DESCRIPTION = description()
-    CREDS = creds()
+    DESCRIPTION, CREDS = description(), creds()
     STORAGE = create_db()
     run(host='localhost', port=8080)

@@ -1,6 +1,6 @@
 import hashlib
 import json
-import datetime
+import time
 from bottle import route, run, request, response, abort
 from pymongo import Connection
 
@@ -62,9 +62,7 @@ class Database(object):
             return entry['code']
 
     def _put_mongo(self, code):
-        uid = hash(code)
-        return self._mongo.insert({"_id": uid, "code": code,
-            "date": datetime.datetime.utcnow()}, safe=True)
+        return self._mongo.insert(make_ds(code), safe=True)
 
     def _init_dict(self):
         self.description = 'dict'
@@ -73,12 +71,12 @@ class Database(object):
         self.put = self._put_dict
 
     def _get_dict(self, uid):
-        return self._dict[uid]
+        return self._dict[uid]['code']
 
     def _put_dict(self, code):
-        uid = hash(code)
-        self._dict[uid] = code
-        return uid
+        ds = make_ds(code)
+        self._dict[ds['_id']] = ds
+        return ds['_id']
 
     def __str__(self):
         return self.description
@@ -88,6 +86,11 @@ storage = Database()
 
 def hash(str_):
     return hashlib.sha224(str_).hexdigest()[:7]
+
+
+def make_ds(code):
+    return {"_id": hash(code), "code": code,
+            "date": time.time()}
 
 
 @route('/')

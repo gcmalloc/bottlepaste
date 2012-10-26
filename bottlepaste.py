@@ -29,7 +29,7 @@ def description(filename='INDEX.rst'):
 
 
 def creds():
-    """ Try to obatin the credentials dictionary form file. """
+    """ Try to obtain the credentials dictionary form file. """
     try:
         # get name of file from env
         cred_file = os.environ.get('CRED_FILE', '')
@@ -50,7 +50,7 @@ def creds():
 def create_db():
     """ Create the database.
 
-    If credntials for a MongoDB are found, connect to that, otherwise create a
+    If credentials for a MongoDB are found, connect to that, otherwise create a
     fallback dictionary pseudo db.
 
     """

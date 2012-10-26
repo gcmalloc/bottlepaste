@@ -1,3 +1,4 @@
+import os
 import hashlib
 import json
 import time
@@ -7,6 +8,7 @@ from pymongo import Connection
 from bson.binary import Binary
 
 BASE_URL = 'http://localhost:8080'
+COLLECTION = 'paste_collection'
 
 
 def description(filename='INDEX.rst'):
@@ -33,9 +35,14 @@ def creds():
         return {}
 
 
-DESCRIPTION = description()
-CREDS = creds()
-COLLECTION = 'paste_collection'
+def create_db():
+    try:
+        # try to init mongodb connection
+        mongodburi = CREDS['MONGOLAB']['MONGOLAB_URI']
+        return MongoDB(mongodburi)
+    # fallback to simple storage if not possible
+    except (KeyError):
+        return DictDB()
 
 
 class Database(object):
@@ -96,18 +103,6 @@ class DictDB(Database, dict):
         return digest
 
 
-def create_db():
-    try:
-        # try to init mongodb connection
-        mongodburi = CREDS['MONGOLAB']['MONGOLAB_URI']
-        return MongoDB(mongodburi)
-    # fallback to simple storage if not possible
-    except (KeyError):
-        return DictDB()
-
-storage = create_db()
-
-
 @route('/')
 def index():
     response.content_type = 'text/plain; charset=utf-8'
@@ -117,7 +112,7 @@ def index():
 @route('/<uid>')
 def show(uid):
     response.content_type = 'text/plain; charset=utf-8'
-    code = storage.get(uid)
+    code = STORAGE.get(uid)
     if code is None:
         abort(404, "Sorry, paste: '%s' Not found." % uid)
     else:
@@ -127,7 +122,11 @@ def show(uid):
 @route('/', method='POST')
 def upload():
     code = request.forms.get("bp")
-    uid = storage.put(code)
+    uid = STORAGE.put(code)
     return "%s/%s\n" % (BASE_URL, uid)
 
-run(host='localhost', port=8080)
+if __name__ == '__main__':
+    DESCRIPTION = description()
+    CREDS = creds()
+    STORAGE = create_db()
+    run(host='localhost', port=8080)

@@ -16,4 +16,4 @@ Example
 Use curl to paste::
 
     $ cat bottlepaste.py | curl -F 'bp=<-' $DEPLOYMENT_URL
-    $DEPLOYMENT_URL/67614b0
+    $DEPLOYMENT_URL/f2eee88

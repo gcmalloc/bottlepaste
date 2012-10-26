@@ -1,8 +1,10 @@
 import hashlib
 import json
-import datetime
+import time
+import zlib
 from bottle import route, run, request, response, abort
 from pymongo import Connection
+from bson.binary import Binary
 
 BASE_URL = 'http://localhost:8080'
 
@@ -56,15 +58,10 @@ class Database(object):
 
     def _get_mongo(self, uid):
         entry = self._mongo.find_one(uid)
-        if entry is None:
-            raise KeyError()
-        else:
-            return entry['code']
+        return zlib.decompress(entry['code']) if entry is not None else None
 
     def _put_mongo(self, code):
-        uid = hash(code)
-        return self._mongo.insert({"_id": uid, "code": code,
-            "date": datetime.datetime.utcnow()}, safe=True)
+        return self._mongo.insert(Database.make_ds(code), safe=True)
 
     def _init_dict(self):
         self.description = 'dict'
@@ -73,21 +70,31 @@ class Database(object):
         self.put = self._put_dict
 
     def _get_dict(self, uid):
-        return self._dict[uid]
+        try:
+            return zlib.decompress(self._dict[uid]['code'])
+        except KeyError:
+            return None
 
     def _put_dict(self, code):
-        uid = hash(code)
-        self._dict[uid] = code
-        return uid
+        ds = Database.make_ds(code, binary=False)
+        self._dict[ds['_id']] = ds
+        return ds['_id']
 
     def __str__(self):
         return self.description
 
+    @staticmethod
+    def hash_(str_):
+        return hashlib.sha224(str_).hexdigest()[:7]
+
+    @staticmethod
+    def make_ds(code, binary=True):
+        compressed = zlib.compress(code)
+        return {"_id": Database.hash_(code),
+                "code": Binary(compressed) if binary else compressed,
+                "date": time.time()}
+
 storage = Database()
-
-
-def hash(str_):
-    return hashlib.sha224(str_).hexdigest()[:7]
 
 
 @route('/')
@@ -99,10 +106,11 @@ def index():
 @route('/<uid>')
 def show(uid):
     response.content_type = 'text/plain; charset=utf-8'
-    try:
-        return storage.get(uid)
-    except KeyError:
+    code = storage.get(uid)
+    if code is None:
         abort(404, "Sorry, paste: '%s' Not found." % uid)
+    else:
+        return code
 
 
 @route('/', method='POST')

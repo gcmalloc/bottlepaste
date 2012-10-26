@@ -7,17 +7,20 @@ from bottle import route, run, request, response, abort
 from pymongo import Connection
 from bson.binary import Binary
 
+# the base url of the app
 BASE_URL = 'http://localhost:8080'
+# the name of the collection in the MongoDB
 COLLECTION = 'paste_collection'
 
 
 def description(filename='INDEX.rst'):
+    """ Parse and template the index file. """
     with open(filename) as readme:
         return readme.read().replace("$DEPLOYMENT_URL", BASE_URL)
 
 
 def creds():
-    """ Try to obatin the credentials dictionary. """
+    """ Try to obatin the credentials dictionary form file. """
     try:
         # get name of file from env
         cred_file = os.environ.get('CRED_FILE', '')
@@ -36,6 +39,12 @@ def creds():
 
 
 def create_db():
+    """ Create the database.
+
+    If credntials for a MongoDB are found, connect to that, otherwise create a
+    fallback dictionary pseudo db.
+
+    """
     try:
         # try to init mongodb connection
         mongodburi = CREDS['MONGOLAB']['MONGOLAB_URI']
@@ -46,6 +55,7 @@ def create_db():
 
 
 class Database(object):
+    """ Database abstract class. """
 
     def __str__(self):
         return self._description
@@ -62,6 +72,7 @@ class Database(object):
 
 
 class MongoDB(Database):
+    """ MongoDB abstraction. """
 
     def __init__(self, mongodburi):
         self._description = 'mongo'
@@ -85,6 +96,7 @@ class MongoDB(Database):
 
 
 class DictDB(Database, dict):
+    """ Dictionary abstraction. """
 
     def __init__(self):
         self._description = 'dict'
@@ -105,12 +117,14 @@ class DictDB(Database, dict):
 
 @route('/')
 def index():
+    """ Show the index.html equivalent. """
     response.content_type = 'text/plain; charset=utf-8'
     return DESCRIPTION
 
 
 @route('/<uid>')
 def show(uid):
+    """ Search for and show a given post. """
     response.content_type = 'text/plain; charset=utf-8'
     code = STORAGE.get(uid)
     if code is None:
@@ -121,6 +135,7 @@ def show(uid):
 
 @route('/', method='POST')
 def upload():
+    """ Upload a post. """
     code = request.forms.get("bp")
     uid = STORAGE.put(code)
     return "%s/%s\n" % (BASE_URL, uid)

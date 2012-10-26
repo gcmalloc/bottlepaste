@@ -9,6 +9,7 @@ import abc
 import hashlib
 import json
 import os
+import re
 import time
 import zlib
 
@@ -20,6 +21,16 @@ from pymongo import Connection
 BASE_URL = 'http://localhost:8080'
 # the name of the collection in the MongoDB
 COLLECTION = 'paste_collection'
+# reserved files
+RESERVED = ['index.html',
+            'index.htm',
+            'status.html',
+            'robots.txt',
+            'paste.html',
+            'favicon.ico',
+            ]
+# regex for matching uid
+UID_LEGAL = re.compile('^[a-zA-Z0-9_\-\.]{3,23}$')
 
 
 def description(filename='INDEX.rst'):
@@ -45,6 +56,12 @@ def creds():
     # in case the file contains nothing or garbage
     except ValueError:
         return {}
+
+
+def uid_legal(uid):
+    """ Check that a uid is legal. """
+    return uid not in RESERVED and \
+            UID_LEGAL.match(uid) is not None
 
 
 def create_db():
@@ -82,7 +99,7 @@ class Database(object):
                 "date": time.time()}
 
     @abc.abstractmethod
-    def put(self, code):
+    def put(self, code, uid=None):
         pass
 
     @abc.abstractmethod
@@ -105,13 +122,14 @@ class MongoDB(Database):
         entry = self._mongo.find_one(uid)
         return zlib.decompress(entry['code']) if entry is not None else None
 
-    def put(self, code):
-        digest = Database.hash_(code)
-        if digest not in self:
-            self._mongo.insert(Database.make_ds(digest,
+    def put(self, code, uid=None):
+        if uid is None:
+            uid = Database.hash_(code)
+        if uid not in self:
+            self._mongo.insert(Database.make_ds(uid,
                 Binary(zlib.compress(code))),
                     safe=True)
-        return digest
+        return uid
 
 
 class DictDB(Database, dict):
@@ -126,12 +144,13 @@ class DictDB(Database, dict):
         except KeyError:
             return None
 
-    def put(self, code):
-        digest = Database.hash_(code)
-        if digest not in self:
-            ds = Database.make_ds(digest, zlib.compress(code))
-            self[digest] = ds
-        return digest
+    def put(self, code, uid=None):
+        if uid is None:
+            uid = Database.hash_(code)
+        if uid not in self:
+            ds = Database.make_ds(uid, zlib.compress(code))
+            self[uid] = ds
+        return uid
 
 
 @route('/')
@@ -156,7 +175,23 @@ def show(uid):
 def upload():
     """ Upload a post. """
     code = request.forms.get("bp")
-    uid = STORAGE.put(code)
+    uid = request.forms.get("uid")
+    # user has requested a uri
+    if uid is not None:
+        # uid exits already
+        if uid in STORAGE:
+            # it's not the same as the existing one
+            if STORAGE.get(uid) != code:
+                return "Sorry, your requested uid: '%s' is already taken" % uid
+        # the the laglity
+        elif not uid_legal(uid):
+            return "Sorry, your requested uid: '%s' is not legal" % uid
+        # if everything above passed, insert the code with requested uri
+        else:
+            STORAGE.put(code, uid=uid)
+    # user has not requested a uri, make one instead
+    else:
+        uid = STORAGE.put(code)
     return "%s/%s\n" % (BASE_URL, uid)
 
 if __name__ == '__main__':

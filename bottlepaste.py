@@ -58,10 +58,7 @@ class Database(object):
 
     def _get_mongo(self, uid):
         entry = self._mongo.find_one(uid)
-        if entry is None:
-            raise KeyError()
-        else:
-            return zlib.decompress(entry['code'])
+        return zlib.decompress(entry['code']) if entry is not None else None
 
     def _put_mongo(self, code):
         return self._mongo.insert(Database.make_ds(code), safe=True)
@@ -73,7 +70,10 @@ class Database(object):
         self.put = self._put_dict
 
     def _get_dict(self, uid):
-        return zlib.decompress(self._dict[uid]['code'])
+        try:
+            return zlib.decompress(self._dict[uid]['code'])
+        except KeyError:
+            return None
 
     def _put_dict(self, code):
         ds = Database.make_ds(code, binary=False)
@@ -106,10 +106,11 @@ def index():
 @route('/<uid>')
 def show(uid):
     response.content_type = 'text/plain; charset=utf-8'
-    try:
-        return storage.get(uid)
-    except KeyError:
+    code = storage.get(uid)
+    if code is None:
         abort(404, "Sorry, paste: '%s' Not found." % uid)
+    else:
+        return code
 
 
 @route('/', method='POST')

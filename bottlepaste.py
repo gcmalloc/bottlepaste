@@ -40,65 +40,72 @@ COLLECTION = 'paste_collection'
 
 class Database(object):
 
-    def __init__(self):
-        try:
-            # try to init mongodb connection
-            mongodburi = CREDS['MONGOLAB']['MONGOLAB_URI']
-            self._init_mongo(mongodburi)
-        # fallback to simple storage if not possible
-        except (KeyError):
-            self._init_dict()
-
-    def _init_mongo(self, mongodburi):
-        self.description = 'mongo'
-        db_name = mongodburi[mongodburi.rfind('/') + 1:]
-        self._mongo = Connection(mongodburi)[db_name][COLLECTION]
-        self.get = self._get_mongo
-        self.put = self._put_mongo
-
-    def _get_mongo(self, uid):
-        entry = self._mongo.find_one(uid)
-        return zlib.decompress(entry['code']) if entry is not None else None
-
-    def _put_mongo(self, code):
-        ds = Database.make_ds(code)
-        if self._get_mongo(ds['_id']) is not None:
-            return ds['_id']
-        else:
-            return self._mongo.insert(ds, safe=True)
-
-    def _init_dict(self):
-        self.description = 'dict'
-        self._dict = {}
-        self.get = self._get_dict
-        self.put = self._put_dict
-
-    def _get_dict(self, uid):
-        try:
-            return zlib.decompress(self._dict[uid]['code'])
-        except KeyError:
-            return None
-
-    def _put_dict(self, code):
-        ds = Database.make_ds(code, binary=False)
-        self._dict[ds['_id']] = ds
-        return ds['_id']
-
     def __str__(self):
-        return self.description
+        return self._description
 
     @staticmethod
     def hash_(str_):
         return hashlib.sha224(str_).hexdigest()[:7]
 
     @staticmethod
-    def make_ds(code, binary=True):
-        compressed = zlib.compress(code)
-        return {"_id": Database.hash_(code),
-                "code": Binary(compressed) if binary else compressed,
+    def make_ds(digest, code):
+        return {"_id":  digest,
+                "code": code,
                 "date": time.time()}
 
-storage = Database()
+
+class MongoDB(Database):
+
+    def __init__(self, mongodburi):
+        self._description = 'mongo'
+        db_name = mongodburi[mongodburi.rfind('/') + 1:]
+        self._mongo = Connection(mongodburi)[db_name][COLLECTION]
+
+    def __contains__(self, uid):
+        return self._mongo.find_one(uid) is not None
+
+    def get(self, uid):
+        entry = self._mongo.find_one(uid)
+        return zlib.decompress(entry['code']) if entry is not None else None
+
+    def put(self, code):
+        digest = Database.hash_(code)
+        if digest not in self:
+            self._mongo.insert(Database.make_ds(digest,
+                Binary(zlib.compress(code))),
+                    safe=True)
+        return digest
+
+
+class DictDB(Database, dict):
+
+    def __init__(self):
+        self._description = 'dict'
+
+    def get(self, uid):
+        try:
+            return zlib.decompress(self[uid]['code'])
+        except KeyError:
+            return None
+
+    def put(self, code):
+        digest = Database.hash_(code)
+        if digest not in self:
+            ds = Database.make_ds(digest, zlib.compress(code))
+            self[digest] = ds
+        return digest
+
+
+def create_db():
+    try:
+        # try to init mongodb connection
+        mongodburi = CREDS['MONGOLAB']['MONGOLAB_URI']
+        return MongoDB(mongodburi)
+    # fallback to simple storage if not possible
+    except (KeyError):
+        return DictDB()
+
+storage = create_db()
 
 
 @route('/')

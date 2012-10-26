@@ -62,7 +62,7 @@ class Database(object):
             return entry['code']
 
     def _put_mongo(self, code):
-        return self._mongo.insert(make_ds(code), safe=True)
+        return self._mongo.insert(Database.make_ds(code), safe=True)
 
     def _init_dict(self):
         self.description = 'dict'
@@ -74,23 +74,24 @@ class Database(object):
         return self._dict[uid]['code']
 
     def _put_dict(self, code):
-        ds = make_ds(code)
+        ds = Database.make_ds(code)
         self._dict[ds['_id']] = ds
         return ds['_id']
 
     def __str__(self):
         return self.description
 
+    @staticmethod
+    def hash_(str_):
+        return hashlib.sha224(str_).hexdigest()[:7]
+
+    @staticmethod
+    def make_ds(code):
+        return {"_id": Database.hash_(code),
+                "code": code,
+                "date": time.time()}
+
 storage = Database()
-
-
-def hash(str_):
-    return hashlib.sha224(str_).hexdigest()[:7]
-
-
-def make_ds(code):
-    return {"_id": hash(code), "code": code,
-            "date": time.time()}
 
 
 @route('/')

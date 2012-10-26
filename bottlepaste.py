@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+# bottlepaste -- a command line pastebin
+# © 2012 Valentin Haenel
+# bottlepaste is licensed under the terms of the MIT License.
+
 import os
 import hashlib
 import json

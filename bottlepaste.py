@@ -39,29 +39,32 @@ def get_url(host=None):
     return "http://%s" % (host if host is not None else get_host())
 
 
+def read_file(filename):
+    with open(filename) as file_fp:
+        return file_fp.read()
+
+
+def parse_cred_str(cred_str):
+    try:
+        # try to convert from json to dict
+        return json.loads(cred_str)
+    except ValueError:
+        return {}
+
+
 def description(url, filename='INDEX.rst'):
     """ Parse and template the index file. """
-    with open(filename) as readme:
-        return readme.read().replace("$DEPLOYMENT_URL", url)
+    return read_file(filename).replace("$DEPLOYMENT_URL", url)
 
 
 def get_creds():
     """ Try to obtain the credentials dictionary form file. """
     try:
-        # get name of file from env
-        cred_file = os.environ.get('CRED_FILE', '')
-        # read file contents
-        with open(cred_file, 'r') as cred_fp:
-            cred_str = cred_fp.read()
-    # in case the file doesn't exist
+        cred_str = read_file(os.environ.get('CRED_FILE', ''))
     except IOError:
         return {}
-    try:
-        # try to convert from json to dict
-        return json.loads(cred_str)
-    # in case the file contains nothing or garbage
-    except ValueError:
-        return {}
+    else:
+        return parse_cred_str(cred_str)
 
 
 def uid_legal(uid):

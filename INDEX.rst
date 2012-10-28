@@ -18,7 +18,7 @@ Use curl to paste::
     $ cat bottlepaste.py | curl -F 'bp=<-' $DEPLOYMENT_URL
     $DEPLOYMENT_URL/ec42eda
 
-If you want a custom uid, use:
+If you want a custom uid, use::
 
     $ cat bottlepaste.py | curl -F 'bp=<-' -F 'uid=bottlepaste.py' $DEPLOYMENT_URL
     $DEPLOYMENT_URL/bottlepaste.py

@@ -32,19 +32,23 @@ UID_LEGAL = re.compile('^[a-zA-Z0-9_\-\.]{3,23}$')
 
 
 def get_host():
+    """ 'Host' from the HTTP header. """
     return request.headers.get('host')
 
 
 def get_url(host=None):
+    """ URL this app is running as, determined from HTTP header 'Host'. """
     return "http://%s" % (host if host is not None else get_host())
 
 
 def read_file(filename):
+    """ Read a file and return it's contents. """
     with open(filename) as file_fp:
         return file_fp.read()
 
 
 def parse_cred_str(cred_str):
+    """ Parse JSON based credential sting. """
     try:
         # try to convert from json to dict
         return json.loads(cred_str)
@@ -194,7 +198,7 @@ def upload():
             if STORAGE.get(uid) != code:
                 response.status = 410
                 return "Sorry, your requested uid: '%s' is already taken" % uid
-        # the the laglity
+        # check the legality
         elif not uid_legal(uid):
             response.status = 406
             return "Sorry, your requested uid: '%s' is not legal" % uid

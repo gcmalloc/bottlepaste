@@ -8,7 +8,7 @@ A command line pastebin akin to `sprunge.us <http://sprunge.us/>`_ but using
 
 The author deploys it on `cloudControl <https://www.cloudcontrol.com/>`_ using
 a MongoDB provided by `mongolab <https://www.mongolab.com/home>`_ as:
-`bottlepaste <http://bottlepaste.cloudcontrolled.com/>`_. Enjoy!
+`bottlepaste.zetatech.org <http://bottlepaste.zetatech.org/>`_. Enjoy!
 
 Stability
 ---------

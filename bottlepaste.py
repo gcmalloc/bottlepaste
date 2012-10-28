@@ -17,8 +17,6 @@ from bottle import route, run, request, response, abort
 from bson.binary import Binary
 from pymongo import Connection
 
-# the base url of the app
-BASE_URL = 'http://localhost:8080'
 # the name of the collection in the MongoDB
 COLLECTION = 'paste_collection'
 # reserved files
@@ -33,10 +31,18 @@ RESERVED = ['index.html',
 UID_LEGAL = re.compile('^[a-zA-Z0-9_\-\.]{3,23}$')
 
 
-def description(filename='INDEX.rst'):
+def get_host():
+    return request.headers.get('host')
+
+
+def get_url(host=None):
+    return "http://%s" % (host if host is not None else get_host())
+
+
+def description(url, filename='INDEX.rst'):
     """ Parse and template the index file. """
     with open(filename) as readme:
-        return readme.read().replace("$DEPLOYMENT_URL", BASE_URL)
+        return readme.read().replace("$DEPLOYMENT_URL", url)
 
 
 def creds():
@@ -157,7 +163,8 @@ class DictDB(Database, dict):
 def index():
     """ Show the index.html equivalent. """
     response.content_type = 'text/plain; charset=utf-8'
-    return DESCRIPTION
+    url = get_url()
+    return DESCRIPTIONS.setdefault(url, description(url))
 
 
 @route('/<uid>')
@@ -192,9 +199,10 @@ def upload():
     # user has not requested a uri, make one instead
     else:
         uid = STORAGE.put(code)
-    return "%s/%s\n" % (BASE_URL, uid)
+    return "%s/%s\n" % (get_url(), uid)
+
 
 if __name__ == '__main__':
-    DESCRIPTION, CREDS = description(), creds()
+    DESCRIPTIONS, CREDS = {}, creds()
     STORAGE = create_db()
     run(host='localhost', port=8080)

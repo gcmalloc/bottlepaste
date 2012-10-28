@@ -45,7 +45,7 @@ def description(url, filename='INDEX.rst'):
         return readme.read().replace("$DEPLOYMENT_URL", url)
 
 
-def creds():
+def get_creds():
     """ Try to obtain the credentials dictionary form file. """
     try:
         # get name of file from env
@@ -70,7 +70,7 @@ def uid_legal(uid):
             UID_LEGAL.match(uid) is not None
 
 
-def create_db():
+def create_db(creds):
     """ Create the database.
 
     If credentials for a MongoDB are found, connect to that, otherwise create a
@@ -79,7 +79,7 @@ def create_db():
     """
     try:
         # try to init mongodb connection
-        mongodburi = CREDS['MONGOLAB']['MONGOLAB_URI']
+        mongodburi = creds['MONGOLAB']['MONGOLAB_URI']
         return MongoDB(mongodburi)
     # fallback to simple storage if not possible
     except (KeyError):
@@ -205,6 +205,5 @@ def upload():
 
 
 if __name__ == '__main__':
-    DESCRIPTIONS, CREDS = {}, creds()
-    STORAGE = create_db()
+    DESCRIPTIONS, STORAGE = {}, create_db(get_creds())
     run(host='localhost', port=8080)

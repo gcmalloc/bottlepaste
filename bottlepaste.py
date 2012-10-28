@@ -189,9 +189,11 @@ def upload():
         if uid in STORAGE:
             # it's not the same as the existing one
             if STORAGE.get(uid) != code:
+                response.status = 410
                 return "Sorry, your requested uid: '%s' is already taken" % uid
         # the the laglity
         elif not uid_legal(uid):
+            response.status = 406
             return "Sorry, your requested uid: '%s' is not legal" % uid
         # if everything above passed, insert the code with requested uri
         else:

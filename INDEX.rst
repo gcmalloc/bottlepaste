@@ -8,7 +8,7 @@ Synposis
 --------
 ::
 
-    <command> | curl -F 'bp=<-' [-F 'uid=<uid>'] $DEPLOYMENT_URLs
+    <command> | curl -F 'bp=<-' [-F 'uid=<uid>'] $DEPLOYMENT_URL
 
 Example
 -------

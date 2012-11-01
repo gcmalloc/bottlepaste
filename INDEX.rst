@@ -28,7 +28,7 @@ If you want a custom uid, use:
     $ cat bottlepaste.py | curl -F 'bp=<-' -F 'uid=bottlepaste.py' $DEPLOYMENT_URL
     $DEPLOYMENT_URL/bottlepaste.py
 
-The ``uid`` is goverend by the following regex: ``'^[a-zA-Z0-9_\-\.]{3,23}$``
+The ``uid`` is goverend by the following regex: ``'^[a-zA-Z0-9_\-\.]{3,23}$'``
 
 See Also
 --------

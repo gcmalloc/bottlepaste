@@ -7,7 +7,7 @@ A command line pastebin akin to `sprunge.us <http://sprunge.us/>`_ but using
 Synposis
 --------
 
-.. code:: sh
+.. code:: console
 
     <command> | curl -F 'bp=<-' [-F 'uid=<uid>'] $DEPLOYMENT_URL
 
@@ -16,14 +16,14 @@ Example
 
 Use curl to paste:
 
-.. code:: sh
+.. code:: console
 
     $ cat bottlepaste.py | curl -F 'bp=<-' $DEPLOYMENT_URL
     $DEPLOYMENT_URL/ec42eda
 
 If you want a custom uid, use:
 
-.. code:: sh
+.. code:: console
 
     $ cat bottlepaste.py | curl -F 'bp=<-' -F 'uid=bottlepaste.py' $DEPLOYMENT_URL
     $DEPLOYMENT_URL/bottlepaste.py

@@ -262,7 +262,7 @@ a:hover {
 <div class="section" id="synposis">
 <h1>Synposis</h1>
 <pre class="code console literal-block">
-<span class="go">&lt;command&gt; | curl -F 'bp=&lt;-' [-F 'uid=&lt;uid&gt;'] DEPLOYMENT_URL</span>
+<span class="gp">$</span> &lt;<span class="nb">command</span>&gt; | curl -F <span class="s1">'bp=&lt;-'</span> <span class="o">[</span>-F <span class="s1">'uid=&lt;uid&gt;'</span><span class="o">]</span> DEPLOYMENT_URL
 </pre>
 </div>
 <div class="section" id="example">

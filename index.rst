@@ -2,7 +2,7 @@ bottlepaste
 ===========
 
 A command line pastebin akin to `sprunge.us <http://sprunge.us/>`_ but using
-`bottle.py <http://bottlepy.org/docs/dev/bottle.py>`_ as webframework and
+`bottle.py <http://bottlepy.org/>`_ as webframework and
 `MongoDB <http://www.mongodb.org/>`_ via `PyMongo
 <http://api.mongodb.org/python/current/>`_ as storage.
 

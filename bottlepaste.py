@@ -169,7 +169,6 @@ class DictDB(Database, dict):
 @route('/')
 def index():
     """ Show the index.html equivalent. """
-    response.content_type = 'text/plain; charset=utf-8'
     url = get_url()
     return DESCRIPTIONS.setdefault(url, description(url))
 

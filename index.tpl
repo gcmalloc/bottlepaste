@@ -234,20 +234,20 @@ a:hover {
 <div class="section" id="synposis">
 <h1>Synposis</h1>
 <pre class="code console literal-block">
-<span class="go">&lt;command&gt; | curl -F 'bp=&lt;-' [-F 'uid=&lt;uid&gt;'] $DEPLOYMENT_URL</span>
+<span class="go">&lt;command&gt; | curl -F 'bp=&lt;-' [-F 'uid=&lt;uid&gt;'] DEPLOYMENT_URL</span>
 </pre>
 </div>
 <div class="section" id="example">
 <h1>Example</h1>
 <p>Use curl to paste:</p>
 <pre class="code console literal-block">
-<span class="gp">$</span> cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> <span class="nv">$DEPLOYMENT_URL</span>
-<span class="gp">$</span>DEPLOYMENT_URL/ec42eda
+<span class="gp">$</span> cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> DEPLOYMENT_URL
+<span class="go">DEPLOYMENT_URL/ec42eda</span>
 </pre>
 <p>If you want a custom uid, use:</p>
 <pre class="code console literal-block">
-<span class="gp">$</span> cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> -F <span class="s1">'uid=bottlepaste.py'</span> <span class="nv">$DEPLOYMENT_URL</span>
-<span class="gp">$</span>DEPLOYMENT_URL/bottlepaste.py
+<span class="gp">$</span> cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> -F <span class="s1">'uid=bottlepaste.py'</span> DEPLOYMENT_URL
+<span class="go">DEPLOYMENT_URL/bottlepaste.py</span>
 </pre>
 <p>The <tt class="docutils literal">uid</tt> is goverend by the following regex: <tt class="docutils literal"><span class="pre">'^[a-zA-Z0-9_\-\.]{3,23}$'</span></tt>
 and some well knowen file names are dissallowed.</p>

@@ -56,7 +56,7 @@ def parse_cred_str(cred_str):
         return {}
 
 
-def description(url, filename='INDEX.rst'):
+def description(url, filename='INDEX.html'):
     """ Parse and template the index file. """
     return read_file(filename).replace("$DEPLOYMENT_URL", url)
 

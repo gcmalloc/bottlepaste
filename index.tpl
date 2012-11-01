@@ -258,7 +258,8 @@ a:hover {
 <h1 class="title">bottlepaste</h1>
 
 <p>A command line pastebin akin to <a class="reference external" href="http://sprunge.us/">sprunge.us</a> but using
-<a class="reference external" href="http://bottlepy.org/docs/dev/bottle.py">bottle.py</a>.</p>
+<a class="reference external" href="http://bottlepy.org/docs/dev/bottle.py">bottle.py</a> as webframework and
+<a class="reference external" href="http://www.mongodb.org/">MongoDB</a> via <a class="reference external" href="http://api.mongodb.org/python/current/">PyMongo</a> as storage.</p>
 <div class="section" id="synposis">
 <h1>Synposis</h1>
 <pre class="code console literal-block">

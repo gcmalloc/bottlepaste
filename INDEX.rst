@@ -29,6 +29,7 @@ If you want a custom uid, use:
     $DEPLOYMENT_URL/bottlepaste.py
 
 The ``uid`` is goverend by the following regex: ``'^[a-zA-Z0-9_\-\.]{3,23}$'``
+and some well knowen file names are dissallowed.
 
 See Also
 --------

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.8.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
 <title>bottlepaste</title>
 <style type="text/css">
 
@@ -196,43 +196,22 @@ a:hover {
 <a class="reference external" href="http://bottlepy.org/docs/dev/bottle.py">bottle.py</a>.</p>
 <div class="section" id="synposis">
 <h1>Synposis</h1>
-<div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">INDEX.rst</tt>, line 10)</p>
-<p>Unknown directive type &quot;code&quot;.</p>
-<pre class="literal-block">
-.. code:: shell
-
-    &lt;command&gt; | curl -F 'bp=&lt;-' [-F 'uid=&lt;uid&gt;'] $DEPLOYMENT_URL
-
+<pre class="code sh literal-block">
+&lt;<span class="nb">command</span>&gt; | curl -F <span class="s1">'bp=&lt;-'</span> <span class="o">[</span>-F <span class="s1">'uid=&lt;uid&gt;'</span><span class="o">]</span> <span class="nv">$DEPLOYMENT_URL</span>
 </pre>
-</div>
 </div>
 <div class="section" id="example">
 <h1>Example</h1>
 <p>Use curl to paste:</p>
-<div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">INDEX.rst</tt>, line 19)</p>
-<p>Unknown directive type &quot;code&quot;.</p>
-<pre class="literal-block">
-.. code:: shell
-
-    $ cat bottlepaste.py | curl -F 'bp=&lt;-' $DEPLOYMENT_URL
-    $DEPLOYMENT_URL/ec42eda
-
+<pre class="code sh literal-block">
+<span class="nv">$ </span>cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> <span class="nv">$DEPLOYMENT_URL</span>
+<span class="nv">$DEPLOYMENT_URL</span>/ec42eda
 </pre>
-</div>
 <p>If you want a custom uid, use:</p>
-<div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">INDEX.rst</tt>, line 26)</p>
-<p>Unknown directive type &quot;code&quot;.</p>
-<pre class="literal-block">
-.. code:: shell
-
-    $ cat bottlepaste.py | curl -F 'bp=&lt;-' -F 'uid=bottlepaste.py' $DEPLOYMENT_URL
-    $DEPLOYMENT_URL/bottlepaste.py
-
+<pre class="code sh literal-block">
+<span class="nv">$ </span>cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> -F <span class="s1">'uid=bottlepaste.py'</span> <span class="nv">$DEPLOYMENT_URL</span>
+<span class="nv">$DEPLOYMENT_URL</span>/bottlepaste.py
 </pre>
-</div>
 <p>The <tt class="docutils literal">uid</tt> is goverend by the following regex: <tt class="docutils literal"><span class="pre">'^[a-zA-Z0-9_\-\.]{3,23}$</span></tt></p>
 </div>
 <div class="section" id="see-also">

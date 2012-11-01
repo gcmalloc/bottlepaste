@@ -56,7 +56,7 @@ def parse_cred_str(cred_str):
         return {}
 
 
-def description(url, filename='INDEX.html'):
+def description(url, filename='index.tpl'):
     """ Parse and template the index file. """
     return read_file(filename).replace("$DEPLOYMENT_URL", url)
 
@@ -167,6 +167,8 @@ class DictDB(Database, dict):
 
 
 @route('/')
+@route('/index.htm')
+@route('/index.html')
 def index():
     """ Show the index.html equivalent. """
     url = get_url()

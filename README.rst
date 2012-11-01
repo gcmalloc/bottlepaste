@@ -31,7 +31,7 @@ embedded.
 To regenerate the page
 use::
 
-    $ rst2html.py --stylesheet-path=bottlepaste.css,vs.css INDEX.rst INDEX.html
+    $ rst2html.py --stylesheet-path=bottlepaste.css,vs.css index.rst index.tpl
 
 Deployment
 ----------

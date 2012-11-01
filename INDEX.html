@@ -233,23 +233,24 @@ a:hover {
 <a class="reference external" href="http://bottlepy.org/docs/dev/bottle.py">bottle.py</a>.</p>
 <div class="section" id="synposis">
 <h1>Synposis</h1>
-<pre class="code sh literal-block">
-&lt;<span class="nb">command</span>&gt; | curl -F <span class="s1">'bp=&lt;-'</span> <span class="o">[</span>-F <span class="s1">'uid=&lt;uid&gt;'</span><span class="o">]</span> <span class="nv">$DEPLOYMENT_URL</span>
+<pre class="code console literal-block">
+<span class="go">&lt;command&gt; | curl -F 'bp=&lt;-' [-F 'uid=&lt;uid&gt;'] $DEPLOYMENT_URL</span>
 </pre>
 </div>
 <div class="section" id="example">
 <h1>Example</h1>
 <p>Use curl to paste:</p>
-<pre class="code sh literal-block">
-<span class="nv">$ </span>cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> <span class="nv">$DEPLOYMENT_URL</span>
-<span class="nv">$DEPLOYMENT_URL</span>/ec42eda
+<pre class="code console literal-block">
+<span class="gp">$</span> cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> <span class="nv">$DEPLOYMENT_URL</span>
+<span class="gp">$</span>DEPLOYMENT_URL/ec42eda
 </pre>
 <p>If you want a custom uid, use:</p>
-<pre class="code sh literal-block">
-<span class="nv">$ </span>cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> -F <span class="s1">'uid=bottlepaste.py'</span> <span class="nv">$DEPLOYMENT_URL</span>
-<span class="nv">$DEPLOYMENT_URL</span>/bottlepaste.py
+<pre class="code console literal-block">
+<span class="gp">$</span> cat bottlepaste.py | curl -F <span class="s1">'bp=&lt;-'</span> -F <span class="s1">'uid=bottlepaste.py'</span> <span class="nv">$DEPLOYMENT_URL</span>
+<span class="gp">$</span>DEPLOYMENT_URL/bottlepaste.py
 </pre>
-<p>The <tt class="docutils literal">uid</tt> is goverend by the following regex: <tt class="docutils literal"><span class="pre">'^[a-zA-Z0-9_\-\.]{3,23}$</span></tt></p>
+<p>The <tt class="docutils literal">uid</tt> is goverend by the following regex: <tt class="docutils literal"><span class="pre">'^[a-zA-Z0-9_\-\.]{3,23}$'</span></tt>
+and some well knowen file names are dissallowed.</p>
 </div>
 <div class="section" id="see-also">
 <h1>See Also</h1>

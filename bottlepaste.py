@@ -58,7 +58,7 @@ def parse_cred_str(cred_str):
 
 def description(url, filename='index.tpl'):
     """ Parse and template the index file. """
-    return read_file(filename).replace("$DEPLOYMENT_URL", url)
+    return read_file(filename).replace("DEPLOYMENT_URL", url)
 
 
 def get_creds():

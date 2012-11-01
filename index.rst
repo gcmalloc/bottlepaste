@@ -9,7 +9,7 @@ Synposis
 
 .. code:: console
 
-    <command> | curl -F 'bp=<-' [-F 'uid=<uid>'] $DEPLOYMENT_URL
+    <command> | curl -F 'bp=<-' [-F 'uid=<uid>'] DEPLOYMENT_URL
 
 Example
 -------
@@ -18,15 +18,15 @@ Use curl to paste:
 
 .. code:: console
 
-    $ cat bottlepaste.py | curl -F 'bp=<-' $DEPLOYMENT_URL
-    $DEPLOYMENT_URL/ec42eda
+    $ cat bottlepaste.py | curl -F 'bp=<-' DEPLOYMENT_URL
+    DEPLOYMENT_URL/ec42eda
 
 If you want a custom uid, use:
 
 .. code:: console
 
-    $ cat bottlepaste.py | curl -F 'bp=<-' -F 'uid=bottlepaste.py' $DEPLOYMENT_URL
-    $DEPLOYMENT_URL/bottlepaste.py
+    $ cat bottlepaste.py | curl -F 'bp=<-' -F 'uid=bottlepaste.py' DEPLOYMENT_URL
+    DEPLOYMENT_URL/bottlepaste.py
 
 The ``uid`` is goverend by the following regex: ``'^[a-zA-Z0-9_\-\.]{3,23}$'``
 and some well knowen file names are dissallowed.

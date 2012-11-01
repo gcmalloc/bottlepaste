@@ -9,7 +9,7 @@ Synposis
 
 .. code:: console
 
-    <command> | curl -F 'bp=<-' [-F 'uid=<uid>'] DEPLOYMENT_URL
+    $ <command> | curl -F 'bp=<-' [-F 'uid=<uid>'] DEPLOYMENT_URL
 
 Example
 -------
